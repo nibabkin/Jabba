@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,7 @@ public class ContactListActivity extends ListActivity implements OnClickListener
 		//TODO: Change toast to start chat activity 
 		Toast t = Toast.makeText(this, contactList.get(position).contactName, Toast.LENGTH_SHORT);
 		t.show();
+		startActivity(new Intent(this, ChatListActivity.class));
 	}
 }
 
