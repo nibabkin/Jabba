@@ -12,12 +12,17 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ContactListActivity extends ListActivity implements OnClickListener {
 	private XMPPConnector xmpp;
 	private ArrayList<ContactListItem> contactList;
 	private ContactListAdapter contactListAdapter;
+	private boolean isConnected;
+	
+	private Button connect;
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,24 +35,39 @@ public class ContactListActivity extends ListActivity implements OnClickListener
         contactListAdapter = new ContactListAdapter(this.getApplicationContext(), R.layout.contact_list_item, contactList);
         setListAdapter(contactListAdapter);
         
-        final Button connect = (Button)findViewById(R.id.connect_button);
+        isConnected = true;
+        
+        connect = (Button)findViewById(R.id.connect_button);
         connect.setOnClickListener(this);
         
-        final Button disconnect = (Button)findViewById(R.id.disconnect_button);
-        disconnect.setOnClickListener(this);
+        connect.setText(R.string.disconnect);
     }
 
 	public void onClick(View view) {
 		switch(view.getId()) {
 		case R.id.connect_button:
-			xmpp.putContacts(contactList);
-			contactListAdapter.notifyDataSetChanged();
+			if (isConnected) {
+				contactList.clear();
+				contactListAdapter.notifyDataSetChanged();
+				connect.setText(R.string.connect);
+				isConnected = false;
+			}
+			else {
+				xmpp.putContacts(contactList);
+				contactListAdapter.notifyDataSetChanged();
+				connect.setText(R.string.disconnect);
+				isConnected = true;
+			}
 			break;
-		case R.id.disconnect_button:
-			contactList.clear();
-			contactListAdapter.notifyDataSetChanged();
+		default:
+			//Nothing to be done there
 		}
-		
+	}
+	
+	public void onListItemClick(ListView parent, View v, int position, long id) {
+		//TODO: Change toast to start chat activity 
+		Toast t = Toast.makeText(this, contactList.get(position).contactName, Toast.LENGTH_SHORT);
+		t.show();
 	}
 }
 
