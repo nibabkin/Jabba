@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_width="fill_parent"
-    	android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
 	<TextView android:id="@+id/chat_header_textview"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_alignParentTop="true"
-			android:background="@android:color/background_light">
-	</TextView>
-	
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:background="@android:color/background_light"
+	/>
+		
 	<RelativeLayout android:id="@+id/new_message_layout"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:background="@android:color/background_light"
+		android:weightSum="1.0"
+	>
+		<Button android:id="@+id/smiles_button"
+			android:layout_height="wrap_content" 
+			android:layout_width="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:text=":)"
+		/>
+		<Button android:id="@+id/send_button"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_alignParentRight="true"
+			android:text="Send"
+		/>
+		<EditText android:id="@+id/new_message_edittext"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentBottom="true"
-			android:background="@android:color/background_light"
-			android:weightSum="1.0">
-	
-		<Button android:id="@+id/smiles_button"
-				android:layout_height="wrap_content" 
-				android:layout_width="wrap_content"
-				android:layout_alignParentLeft="true"
-				android:text=":)"/>
-		
-		<Button android:id="@+id/send_button"
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				android:layout_alignParentRight="true"
-				android:text="Send"/>
-		
-		<EditText android:id="@+id/new_message_edittext"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_toRightOf="@id/smiles_button"
-				android:layout_toLeftOf="@id/send_button"
-				android:text="some_text"/>
-							
+			android:layout_toRightOf="@id/smiles_button"
+			android:layout_toLeftOf="@id/send_button"
+		/>
 	</RelativeLayout>
 			
 	<ListView android:id="@android:id/list"
@@ -43,7 +43,7 @@
 			android:layout_width="fill_parent" 
 			android:layout_below="@id/chat_header_textview"
 			android:layout_above="@id/new_message_layout"
-			android:drawSelectorOnTop="false">
-	</ListView>
+			android:drawSelectorOnTop="false"
+	/>
 	
 </RelativeLayout>

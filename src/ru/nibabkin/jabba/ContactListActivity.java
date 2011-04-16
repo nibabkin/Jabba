@@ -66,10 +66,10 @@ public class ContactListActivity extends ListActivity implements OnClickListener
 	}
 	
 	public void onListItemClick(ListView parent, View v, int position, long id) {
-		//TODO: Change toast to start chat activity 
-		Toast t = Toast.makeText(this, contactList.get(position).contactName, Toast.LENGTH_SHORT);
-		t.show();
-		startActivity(new Intent(this, ChatListActivity.class));
+		Intent chatIntent = new Intent(this, ChatListActivity.class);
+		ContactListItem contact = contactList.get(position);
+		chatIntent.putExtra("ContactName", contact.contactName);
+		startActivity(chatIntent);
 	}
 }
 
