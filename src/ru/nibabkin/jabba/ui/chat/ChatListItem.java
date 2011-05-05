@@ -1,6 +1,6 @@
 package ru.nibabkin.jabba.ui.chat;
 
-class ChatListItem {
+public class ChatListItem {
     
 	public String messageMark;
     public String message;

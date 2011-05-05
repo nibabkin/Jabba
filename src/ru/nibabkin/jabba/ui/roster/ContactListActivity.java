@@ -2,6 +2,8 @@ package ru.nibabkin.jabba.ui.roster;
 
 import java.util.ArrayList;
 
+import org.jivesoftware.smack.PacketListener;
+
 import ru.nibabkin.jabba.R;
 import ru.nibabkin.jabba.ui.chat.ChatListActivity;
 import ru.nibabkin.jabba.xmpp.XmppConnector;
@@ -20,6 +22,8 @@ public class ContactListActivity extends ListActivity implements OnClickListener
 	private ContactListAdapter contactListAdapter;
 	private boolean isConnected;
 	
+	private ChatListActivity chat;
+	
 	private Button connect;
 	
     public void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,8 @@ public class ContactListActivity extends ListActivity implements OnClickListener
         setContentView(R.layout.main);
         
         contactList = new ArrayList<ContactListItem>();
-        xmpp = new XmppConnector();
+        chat = new ChatListActivity();
+        xmpp = new XmppConnector((PacketListener)chat);
         xmpp.putContacts(contactList);
         
         contactListAdapter = new ContactListAdapter(this.getApplicationContext(), R.layout.contact_list_item, contactList);
@@ -67,6 +72,7 @@ public class ContactListActivity extends ListActivity implements OnClickListener
 		ContactListItem contact = contactList.get(position);
 		chatIntent.putExtra("ContactName", contact.contactName);
 		startActivity(chatIntent);
+		chat.startActivity(chatIntent);
 	}
 }
 

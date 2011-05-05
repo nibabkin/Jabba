@@ -2,23 +2,36 @@ package ru.nibabkin.jabba.ui.chat;
 
 import java.util.ArrayList;
 
+import org.jivesoftware.smack.PacketListener;
+import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Packet;
+import org.jivesoftware.smack.util.StringUtils;
+
 import ru.nibabkin.jabba.R;
+import ru.nibabkin.jabba.xmpp.XmppConnector;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class ChatListActivity extends ListActivity implements OnClickListener{
+public class ChatListActivity extends ListActivity 
+		implements OnClickListener, PacketListener{
 	private String contactName;
 	private Button sendButton;
 	private ArrayList<ChatListItem> chatList;
 	private ChatListAdapter chatAdapter;
 	private EditText newMessage;
+	
+	public ChatListActivity() {
+		
+	}
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +57,32 @@ public class ChatListActivity extends ListActivity implements OnClickListener{
     }
 
 	public void onClick(View element) {
-		chatList.add(new ChatListItem("Nikita Babkin", newMessage.getText().toString()));
+		String to = contactName;
+        String text = newMessage.getText().toString();
+
+        XMPPConnection connection = XmppConnector.connection;
+        
+        Log.i("XMPPClient", "Sending text [" + text + "] to [" + to + "]");
+        Message msg = new Message(to, Message.Type.chat);
+        msg.setBody(text);
+        connection.sendPacket(msg);
+        
+        
+        chatList.add(new ChatListItem(connection.getUser() + ":", text));
+       
 		chatAdapter.notifyDataSetChanged();
 		newMessage.setText(null);
+	}
+
+	public void processPacket(Packet packet) {
+		Message message = (Message) packet;
+        if (message.getBody() != null) {
+            String fromName = StringUtils.parseBareAddress(message.getFrom());
+            Log.i("XmppConnector", "Got text [" + message.getBody() + "] from [" + fromName + "]");
+            chatList.add(new ChatListItem(fromName + ":", message.getBody()));
+            
+            chatAdapter.notifyDataSetChanged();
+        }
 		
-		chatList.add(new ChatListItem(contactName, "Yes!"));
-		chatAdapter.notifyDataSetChanged();
 	}
 }
