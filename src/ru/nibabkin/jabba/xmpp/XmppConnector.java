@@ -57,11 +57,11 @@ public class XmppConnector {
 	}
 	
 	public void setConnection (XMPPConnection connection) {
-		this.connection = connection;
-		if (this.connection != null) {
+		XmppConnector.connection = connection;
+		if (XmppConnector.connection != null) {
 		    // Add a packet listener to get messages sent to us
 		    PacketFilter filter = new MessageTypeFilter(Message.Type.chat);
-		    this.connection.addPacketListener(packetListener, filter);
+		    XmppConnector.connection.addPacketListener(packetListener, filter);
 		}
 	}
 	
